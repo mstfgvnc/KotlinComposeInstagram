@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "833883817499",
+    "project_id": "composeinstagram-d191c",
+    "storage_bucket": "composeinstagram-d191c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:833883817499:android:419d69c182c3c0277d5abe",
+        "android_client_info": {
+          "package_name": "com.mustafaguvenc.kotlincomposeinstagram"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "833883817499-nd5nkbgm1u2cmotmp69s94j2h4k2ebel.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBtQsYX2eScT3HrQN24zn734IACOIBPzdw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "833883817499-nd5nkbgm1u2cmotmp69s94j2h4k2ebel.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
