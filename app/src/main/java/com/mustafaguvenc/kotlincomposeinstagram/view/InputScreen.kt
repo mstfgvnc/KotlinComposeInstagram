@@ -39,6 +39,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.constraintlayout.compose.Visibility
 import androidx.navigation.NavController
 import com.mustafaguvenc.kotlincomposeinstagram.R
 
@@ -202,6 +203,9 @@ fun InputScreen(
                             color = Color.White,
                             shape = RoundedCornerShape(10.dp)
                         )
+                        .clickable {
+                            navController.navigate("feed_screen")
+                        }
 
                 ) {
                     Text(text = "Sign In",

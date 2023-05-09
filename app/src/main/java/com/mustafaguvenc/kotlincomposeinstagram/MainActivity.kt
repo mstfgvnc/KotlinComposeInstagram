@@ -17,7 +17,9 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.mustafaguvenc.kotlincomposeinstagram.ui.theme.KotlinComposeInstagramTheme
+import com.mustafaguvenc.kotlincomposeinstagram.view.FeedScreen
 import com.mustafaguvenc.kotlincomposeinstagram.view.InputScreen
+import com.mustafaguvenc.kotlincomposeinstagram.view.UploadScreen
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,9 +35,10 @@ class MainActivity : ComponentActivity() {
                     }
                     composable("feed_screen"){
                         // sadece recylerview var
+                        FeedScreen(navController = navController)
                     }
                     composable("upload_screen"){
-
+                        UploadScreen(navController = navController)
                     }
 
 /*
