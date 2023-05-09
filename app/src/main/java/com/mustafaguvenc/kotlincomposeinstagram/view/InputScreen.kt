@@ -192,7 +192,7 @@ fun InputScreen(
                 .fillMaxWidth()
                 .padding(5.dp)) {
                 Button(onClick = {
-
+                    navController.navigate("feed_screen")
                 }, shape = RoundedCornerShape(20.dp),
                     modifier = Modifier
                         .fillMaxWidth()
@@ -204,7 +204,7 @@ fun InputScreen(
                             shape = RoundedCornerShape(10.dp)
                         )
                         .clickable {
-                            navController.navigate("feed_screen")
+
                         }
 
                 ) {
