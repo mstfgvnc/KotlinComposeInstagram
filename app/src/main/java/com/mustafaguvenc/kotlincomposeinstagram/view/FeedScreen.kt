@@ -26,6 +26,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -60,7 +61,7 @@ fun PostList(navController: NavController,
 
   //  postList.value?.data?.let { PostListView(posts = it, navController = navController) }
 
-    postList.value?.let { PostListView(posts = it, navController = navController) }
+    postList.value.let { PostListView(posts = it, navController = navController) }
 
     Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxSize()){
         if(isLoading.value){
@@ -100,8 +101,9 @@ fun PostRow(navController: NavController, post : String) {
 
              */
     ) {
+        Text(text = "User Email")
         Image(painter = painterResource(id = R.drawable.ic_launcher_background), contentDescription = "")
-
+        Text(text = "Comment")
     }
 
 }
@@ -122,3 +124,4 @@ fun RetyryView(
         }
     }
 }
+
