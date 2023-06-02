@@ -30,6 +30,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -99,7 +100,7 @@ fun InputScreen(
                 onValueChange ={
                     emailInput = it
             }, placeholder = {
-                    Text(text = "Enter Email...",
+                    Text(text = stringResource(R.string.enter_email),
                     fontFamily = FontFamily.Cursive
                     )},
                 modifier = Modifier
@@ -113,7 +114,7 @@ fun InputScreen(
                     unfocusedIndicatorColor = Color.Transparent),
                 label = {
                     Text(
-                        text = "Email",
+                        text = stringResource(R.string.email),
                         fontFamily = FontFamily.Cursive
                     )
                 },
@@ -122,13 +123,13 @@ fun InputScreen(
                 leadingIcon = {
                     Icon(
                         imageVector = Icons.Default.Email,
-                        contentDescription = "Email Icon"
+                        contentDescription = stringResource(R.string.email_icon)
                     )
                 },
                 trailingIcon = {
                     Icon(
                         imageVector = Icons.Default.Person,
-                        contentDescription = "Person Icon"
+                        contentDescription = stringResource(R.string.person_icon)
                     )
                 }
             )
@@ -139,7 +140,7 @@ fun InputScreen(
                 onValueChange ={
                     passwordInput = it
                 }, placeholder = {
-                    Text(text = "Enter Password...",
+                    Text(text = stringResource(R.string.enter_password),
                     fontFamily = FontFamily.Cursive
                     )},
                 modifier = Modifier
@@ -152,7 +153,7 @@ fun InputScreen(
                     unfocusedIndicatorColor = Color.Transparent),
                 label = {
                     Text(
-                        text = "Password",
+                        text = stringResource(R.string.password),
                         fontFamily = FontFamily.Cursive
                     )
                 },
@@ -162,14 +163,15 @@ fun InputScreen(
                 leadingIcon = {
                     Icon(
                         imageVector = Icons.Outlined.Lock,
-                        contentDescription = "Lock Icon"
+                        contentDescription = stringResource(R.string.lock_icon)
                     )
                 },
                 trailingIcon = {
                     IconButton(onClick = { passwordVisibility = !passwordVisibility }) {
                         Icon(
                             imageVector = if (passwordVisibility) Icons.Outlined.VisibilityOff else Icons.Outlined.Visibility,
-                            contentDescription = if (passwordVisibility) "Show Password" else "Hide Password"
+                            contentDescription = if (passwordVisibility) stringResource(R.string.show_password) else stringResource(
+                                                            R.string.hide_password)
                         )
                     }
                 }
@@ -207,7 +209,7 @@ fun InputScreen(
                         }
 
                 ) {
-                    Text(text = "Sign In",
+                    Text(text = stringResource(R.string.sign_in),
                         fontSize = 20.sp,
                         fontFamily = FontFamily.Cursive
                         )
@@ -224,7 +226,7 @@ fun InputScreen(
                             color = Color.White,
                             shape = RoundedCornerShape(10.dp)
                         )) {
-                    Text(text = "Sign Up",
+                    Text(text = stringResource(R.string.sign_up),
                         fontSize = 20.sp,
                         fontFamily = FontFamily.Cursive
                         )

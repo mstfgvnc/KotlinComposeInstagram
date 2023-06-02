@@ -24,6 +24,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -61,7 +62,9 @@ fun PostList(navController: NavController,
 
   //  postList.value?.data?.let { PostListView(posts = it, navController = navController) }
 
-    postList.value.let { PostListView(posts = it, navController = navController) }
+    postList.value.let {
+        PostListView(posts = it, navController = navController)
+    }
 
     Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxSize()){
         if(isLoading.value){
@@ -75,6 +78,8 @@ fun PostList(navController: NavController,
 
         }
     }
+
+
 
 }
 
@@ -101,9 +106,9 @@ fun PostRow(navController: NavController, post : String) {
 
              */
     ) {
-        Text(text = "User Email")
+        Text(text = stringResource(R.string.user_email))
         Image(painter = painterResource(id = R.drawable.ic_launcher_background), contentDescription = "")
-        Text(text = "Comment")
+        Text(text = stringResource(R.string.comment))
     }
 
 }
@@ -120,7 +125,7 @@ fun RetyryView(
             onRetry
         }, modifier = Modifier.align(Alignment.CenterHorizontally)
         ) {
-            Text(text = "Retry")
+            Text(text = stringResource(R.string.retry))
         }
     }
 }
