@@ -42,11 +42,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.mustafaguvenc.kotlincomposeinstagram.R
+import com.mustafaguvenc.kotlincomposeinstagram.viewmodel.InputViewModel
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun InputScreen(
     navController: NavController,
-  //  viewModel : CryptoListViewModel = hiltViewModel()
+    viewModel : InputViewModel = koinViewModel()
 ) {
     var emailInput by remember {
         mutableStateOf("")
@@ -60,6 +62,8 @@ fun InputScreen(
 
     val focusRequester = remember { FocusRequester() }
     val focusManager = LocalFocusManager.current
+    viewModel.init()
+
 
     Box(
         modifier = Modifier
