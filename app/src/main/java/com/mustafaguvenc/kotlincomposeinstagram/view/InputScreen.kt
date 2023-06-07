@@ -1,6 +1,8 @@
 package com.mustafaguvenc.kotlincomposeinstagram.view
 
+import android.content.Intent
 import android.graphics.drawable.VectorDrawable
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -28,6 +30,7 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusEvent
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -64,6 +67,9 @@ fun InputScreen(
     val focusManager = LocalFocusManager.current
     viewModel.init()
 
+    if (viewModel.currentUser != null) {
+        navController.navigate("feed_screen")
+    }
 
     Box(
         modifier = Modifier
@@ -99,6 +105,8 @@ fun InputScreen(
             Modifier
                 .fillMaxHeight()
                 .weight(4f)){
+
+            val context = LocalContext.current
 
             TextField(value = emailInput,
                 onValueChange ={
@@ -197,7 +205,21 @@ fun InputScreen(
                 .fillMaxWidth()
                 .padding(5.dp)) {
                 Button(onClick = {
-                    navController.navigate("feed_screen")
+
+                    if (emailInput.isNotEmpty() && passwordInput.isNotEmpty()) {
+                        viewModel.auth.signInWithEmailAndPassword(emailInput,passwordInput).addOnCompleteListener { task ->
+
+                            if (task.isSuccessful) {
+                                navController.navigate("feed_screen")
+                            }
+
+                        }.addOnFailureListener { exception ->
+                            Toast.makeText(context,exception.localizedMessage,Toast.LENGTH_LONG).show()
+                        }
+                    }
+
+
+
                 }, shape = RoundedCornerShape(20.dp),
                     modifier = Modifier
                         .fillMaxWidth()
@@ -219,6 +241,21 @@ fun InputScreen(
                         )
                 }
                 Button(onClick = {
+
+                    if (emailInput.isNotEmpty() && passwordInput.isNotEmpty()) {
+
+                        viewModel.auth.createUserWithEmailAndPassword(emailInput,passwordInput).addOnCompleteListener { task ->
+
+                            if (task.isSuccessful) {
+
+                                navController.navigate("feed_screen")
+                            }
+
+                        }.addOnFailureListener { exception ->
+                            Toast.makeText(context,exception.localizedMessage,Toast.LENGTH_LONG).show()
+
+                        }
+                    }
 
                 }, shape = RoundedCornerShape(20.dp),
                     modifier = Modifier
