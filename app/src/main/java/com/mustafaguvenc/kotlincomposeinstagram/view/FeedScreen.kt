@@ -53,12 +53,14 @@ fun FeedScreen(
 
 @Composable
 fun PostList(navController: NavController,
-             viewModel: FeedViewModel = koinViewModel()
+        //     viewModel: FeedViewModel = koinViewModel()
 ) {
-
+/*
     val postList = remember { viewModel.postList }
     val errorMessage = remember { viewModel.postError }
     val isLoading = remember { viewModel.postLoading }
+
+
 
   //  postList.value?.data?.let { PostListView(posts = it, navController = navController) }
 
@@ -78,6 +80,8 @@ fun PostList(navController: NavController,
 
         }
     }
+
+ */
 
 
 
