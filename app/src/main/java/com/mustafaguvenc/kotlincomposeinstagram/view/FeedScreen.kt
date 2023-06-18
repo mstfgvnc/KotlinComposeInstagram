@@ -1,5 +1,6 @@
 package com.mustafaguvenc.kotlincomposeinstagram.view
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -15,14 +16,26 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Button
 import androidx.compose.material.CircularProgressIndicator
+import androidx.compose.material.DropdownMenu
+import androidx.compose.material.DropdownMenuItem
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
+import androidx.compose.material.TopAppBar
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -31,8 +44,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.google.firebase.auth.FirebaseAuth
 import com.mustafaguvenc.kotlincomposeinstagram.R
 import com.mustafaguvenc.kotlincomposeinstagram.viewmodel.FeedViewModel
+import com.mustafaguvenc.kotlincomposeinstagram.viewmodel.InputViewModel
 import org.koin.androidx.compose.koinViewModel
 import org.koin.androidx.compose.navigation.koinNavViewModel
 import org.koin.androidx.compose.viewModel
@@ -40,13 +55,19 @@ import org.koin.androidx.compose.viewModel
 @Composable
 fun FeedScreen(
     navController: NavController,
+    viewModel : InputViewModel = koinViewModel()
+
 ){
+    viewModel.init()
+
     Surface(
         color = MaterialTheme.colors.secondary,
         modifier = Modifier.fillMaxSize()
     ) {
+
         Column {
-            PostList(navController = navController)
+            OptionMenu(navController,viewModel.auth)
+          //  PostList(navController = navController)
         }
     }
 }
@@ -132,5 +153,52 @@ fun RetyryView(
             Text(text = stringResource(R.string.retry))
         }
     }
+}
+
+@Composable
+fun OptionMenu(navController:NavController, auth: FirebaseAuth) {
+    var showMenu by remember { mutableStateOf(false) }
+    val context = LocalContext.current
+    TopAppBar(
+        title= {Text("MGtagram")},
+        actions = {
+            /*
+            IconButton(onClick ={ Toast.makeText(context,"Favorite", Toast.LENGTH_LONG).show()} ) {
+                Icon(Icons.Default.Favorite,"")
+            }
+
+             */
+            IconButton(onClick ={showMenu = !showMenu} ) {
+                Icon(Icons.Default.MoreVert,"")
+            }
+
+            DropdownMenu(
+                expanded = showMenu,
+                onDismissRequest = { showMenu = false }
+            ) {
+                DropdownMenuItem(onClick = { navController.navigate("upload_screen") }) {
+                    Text(text = "Add Post")
+                }
+
+                DropdownMenuItem(onClick = {
+                    auth.signOut()
+                    navController.navigate("user_input_screen"){
+                        /*
+                        popUpTo("feed_screen"){
+                            saveState = false
+                            inclusive = false
+                        }
+                        restoreState = false
+                        launchSingleTop = true
+
+                         */
+                    }
+
+                }) {
+                    Text(text = "Signout")
+                }
+            }
+        }
+    )
 }
 

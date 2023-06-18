@@ -12,7 +12,7 @@ val appModule = module {
 
  //  viewModelOf(::FeedViewModel)
    viewModel {
-     // FeedViewModel()
+    //  FeedViewModel()
       InputViewModel()
    }
 
