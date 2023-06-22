@@ -51,7 +51,7 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun InputScreen(
     navController: NavController,
-    viewModel : InputViewModel = koinViewModel()
+    viewModel : InputViewModel
 ) {
     var emailInput by remember {
         mutableStateOf("")
@@ -65,11 +65,18 @@ fun InputScreen(
 
     val focusRequester = remember { FocusRequester() }
     val focusManager = LocalFocusManager.current
-    viewModel.init()
 
-    if (viewModel.currentUser != null) {
-        navController.navigate("feed_screen")
+    /*
+    LaunchedEffect(key1 = Unit){
+        viewModel.init()
+        if (viewModel.currentUser != null) {
+            navController.navigate("feed_screen")
+        }
     }
+
+     */
+
+
 
     Box(
         modifier = Modifier

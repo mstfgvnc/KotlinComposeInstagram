@@ -16,11 +16,7 @@ import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.MoreVert
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
@@ -33,6 +29,8 @@ import com.mustafaguvenc.kotlincomposeinstagram.ui.theme.KotlinComposeInstagramT
 import com.mustafaguvenc.kotlincomposeinstagram.view.FeedScreen
 import com.mustafaguvenc.kotlincomposeinstagram.view.InputScreen
 import com.mustafaguvenc.kotlincomposeinstagram.view.UploadScreen
+import com.mustafaguvenc.kotlincomposeinstagram.viewmodel.InputViewModel
+import org.koin.androidx.compose.koinViewModel
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,18 +40,29 @@ class MainActivity : ComponentActivity() {
          //   OptionMenu()
             KotlinComposeInstagramTheme {
 
+                val viewModel : InputViewModel = koinViewModel()
+
                 val navController = rememberNavController()
 
-                NavHost(navController = navController, startDestination = "user_input_screen"){
+                var startDestination ="user_input_screen"
+
+
+                viewModel.init()
+                if (viewModel.currentUser != null) {
+                    startDestination = "feed_screen"
+                }
+
+
+                NavHost(navController = navController, startDestination = startDestination){
                     composable("user_input_screen"){
-                        InputScreen(navController = navController)
+                        InputScreen(navController = navController,viewModel)
                     }
                     composable("feed_screen"){
                         // sadece recylerview var
-                        FeedScreen(navController = navController)
+                        FeedScreen(navController = navController,viewModel)
                     }
                     composable("upload_screen"){
-                        UploadScreen(navController = navController)
+                        UploadScreen(navController = navController,viewModel)
                     }
 
 /*
@@ -87,6 +96,10 @@ class MainActivity : ComponentActivity() {
 
             }
         }
+    }
+
+    override fun onBackPressed() {
+   //     super.onBackPressed()
     }
 
 

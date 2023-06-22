@@ -55,10 +55,10 @@ import org.koin.androidx.compose.viewModel
 @Composable
 fun FeedScreen(
     navController: NavController,
-    viewModel : InputViewModel = koinViewModel()
+    viewModel : InputViewModel
 
 ){
-    viewModel.init()
+  //  viewModel.init()
 
     Surface(
         color = MaterialTheme.colors.secondary,
@@ -182,17 +182,7 @@ fun OptionMenu(navController:NavController, auth: FirebaseAuth) {
 
                 DropdownMenuItem(onClick = {
                     auth.signOut()
-                    navController.navigate("user_input_screen"){
-                        /*
-                        popUpTo("feed_screen"){
-                            saveState = false
-                            inclusive = false
-                        }
-                        restoreState = false
-                        launchSingleTop = true
-
-                         */
-                    }
+                    navController.navigate("user_input_screen")
 
                 }) {
                     Text(text = "Signout")
