@@ -3,10 +3,15 @@ package com.mustafaguvenc.kotlincomposeinstagram.view
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.Uri
+import android.provider.MediaStore
 import android.util.Log
 import android.view.KeyEvent
 import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -33,12 +38,14 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusProperties
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.input.key.KeyEventType
 import androidx.compose.ui.input.key.key
 import androidx.compose.ui.input.key.onKeyEvent
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
@@ -67,7 +74,19 @@ fun UploadScreen(
 
     val scaffoldState = rememberScaffoldState() // this contains the `SnackbarHostState`
     val coroutineScope = rememberCoroutineScope()
-
+    var selectedPicture : Uri? =null
+    val imagePicker = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.StartActivityForResult(),
+        onResult = { uri ->
+            if(uri.resultCode == Activity.RESULT_OK ){
+                val intentFromResult = uri.data
+                if(intentFromResult != null){
+                    selectedPicture = intentFromResult.data
+                }
+            }
+            // TODO
+        }
+    )
     var commentInput by remember {
         mutableStateOf("")
     }
@@ -118,42 +137,59 @@ fun UploadScreen(
                 ) {
 
 
-                    Image(painterResource(id = R.drawable.add_159647), "",
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .clickable {
+                    Image(painter = painterResource(id = R.drawable.add_159647), "",
 
-                                if(ContextCompat.checkSelfPermission(context,android.Manifest.permission.READ_EXTERNAL_STORAGE)!=PackageManager.PERMISSION_GRANTED){
-                                    if(ActivityCompat.shouldShowRequestPermissionRationale(context,android.Manifest.permission.READ_EXTERNAL_STORAGE)){
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .clickable {
+
+                                    if (ContextCompat.checkSelfPermission(
+                                            context,
+                                            android.Manifest.permission.READ_EXTERNAL_STORAGE
+                                        ) != PackageManager.PERMISSION_GRANTED
+                                    ) {
+                                        if (ActivityCompat.shouldShowRequestPermissionRationale(
+                                                context,
+                                                android.Manifest.permission.READ_EXTERNAL_STORAGE
+                                            )
+                                        ) {
 
 
-                                        coroutineScope.launch {
-                                            // using the `coroutineScope` to `launch` showing the snackbar
-                                            // taking the `snackbarHostState` from the attached `scaffoldState`
-                                            val snackbarResult =
-                                                scaffoldState.snackbarHostState.showSnackbar(
-                                                    message = "This is your message",
-                                                    actionLabel = "Do something."
-                                                )
-                                            when (snackbarResult) {
-                                                SnackbarResult.Dismissed -> Log.d(
-                                                    "SnackbarDemo",
-                                                    "Dismissed"
-                                                )
-                                                SnackbarResult.ActionPerformed -> Log.d(
-                                                    "SnackbarDemo",
-                                                    "Snackbar's button clicked"
-                                                )
+                                            coroutineScope.launch {
+                                                // using the `coroutineScope` to `launch` showing the snackbar
+                                                // taking the `snackbarHostState` from the attached `scaffoldState`
+                                                val snackbarResult =
+                                                    scaffoldState.snackbarHostState.showSnackbar(
+                                                        message = "Permission need for gallery",
+                                                        actionLabel = "Give permission"
+                                                    )
+                                                when (snackbarResult) {
+                                                    SnackbarResult.Dismissed -> Log.d(
+                                                        "SnackbarDemo",
+                                                        "Dismissed"
+                                                    )
+
+                                                    SnackbarResult.ActionPerformed -> Log.d(
+                                                        "SnackbarDemo",
+                                                        "Snackbar's button clicked"
+                                                    )
+                                                }
                                             }
+
+
+                                        } else {
+                                            // request permission
                                         }
-
-
+                                    } else {
+                                        //start activity for result
+                                        val intentToGallery = Intent(
+                                            Intent.ACTION_PICK,
+                                            MediaStore.Images.Media.EXTERNAL_CONTENT_URI
+                                        )
                                     }
-                                }
 
 
-
-                            })
+                                })
 
 
                 }
