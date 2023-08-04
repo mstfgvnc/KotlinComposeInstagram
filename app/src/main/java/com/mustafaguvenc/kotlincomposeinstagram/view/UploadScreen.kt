@@ -5,6 +5,7 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
 import android.net.Uri
 import android.provider.MediaStore
 import android.util.Log
@@ -52,6 +53,7 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType.Companion.Uri
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
@@ -60,6 +62,9 @@ import androidx.compose.ui.unit.sp
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.navigation.NavController
+import coil.compose.AsyncImage
+import coil.compose.rememberAsyncImagePainter
+import coil.compose.rememberImagePainter
 import com.mustafaguvenc.kotlincomposeinstagram.R
 import com.mustafaguvenc.kotlincomposeinstagram.viewmodel.InputViewModel
 import kotlinx.coroutines.launch
@@ -74,19 +79,22 @@ fun UploadScreen(
 
     val scaffoldState = rememberScaffoldState() // this contains the `SnackbarHostState`
     val coroutineScope = rememberCoroutineScope()
-    var selectedPicture : Uri? =null
+    var selectedPicture by remember {
+        mutableStateOf<Uri?>(android.net.Uri.parse("android.resource://com.mustafaguvenc.kotlincomposeinstagram/" + R.drawable.add_159647))
+    }
+    val bitmap =  remember {
+        mutableStateOf<Bitmap?>(null)
+    }
     val imagePicker = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.StartActivityForResult(),
-        onResult = { uri ->
-            if(uri.resultCode == Activity.RESULT_OK ){
-                val intentFromResult = uri.data
-                if(intentFromResult != null){
-                    selectedPicture = intentFromResult.data
-                }
-            }
-            // TODO
+        contract = ActivityResultContracts.GetContent()){ uri: Uri? ->
+            selectedPicture = uri
         }
-    )
+    val permissionLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission()){
+        
+    }
+
+
     var commentInput by remember {
         mutableStateOf("")
     }
@@ -137,12 +145,12 @@ fun UploadScreen(
                 ) {
 
 
-                    Image(painter = painterResource(id = R.drawable.add_159647), "",
+               //     Image(painter = painterResource(id = R.drawable.add_159647), "",
+                         Image(painter = rememberAsyncImagePainter(selectedPicture), "",
 
                             modifier = Modifier
                                 .fillMaxSize()
                                 .clickable {
-
                                     if (ContextCompat.checkSelfPermission(
                                             context,
                                             android.Manifest.permission.READ_EXTERNAL_STORAGE
@@ -179,18 +187,12 @@ fun UploadScreen(
 
                                         } else {
                                             // request permission
+
                                         }
                                     } else {
-                                        //start activity for result
-                                        val intentToGallery = Intent(
-                                            Intent.ACTION_PICK,
-                                            MediaStore.Images.Media.EXTERNAL_CONTENT_URI
-                                        )
+                                        imagePicker.launch("image/*")
                                     }
-
-
                                 })
-
 
                 }
 
