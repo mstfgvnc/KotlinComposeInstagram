@@ -62,9 +62,7 @@ import androidx.compose.ui.unit.sp
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.navigation.NavController
-import coil.compose.AsyncImage
 import coil.compose.rememberAsyncImagePainter
-import coil.compose.rememberImagePainter
 import com.mustafaguvenc.kotlincomposeinstagram.R
 import com.mustafaguvenc.kotlincomposeinstagram.viewmodel.InputViewModel
 import kotlinx.coroutines.launch
@@ -90,8 +88,12 @@ fun UploadScreen(
             selectedPicture = uri
         }
     val permissionLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.RequestPermission()){
-        
+        contract = ActivityResultContracts.RequestPermission()){ isGranted ->
+        if (isGranted) {
+            // Open camera
+        } else {
+            // Show dialog
+        }
     }
 
 
@@ -177,17 +179,19 @@ fun UploadScreen(
                                                         "Dismissed"
                                                     )
 
-                                                    SnackbarResult.ActionPerformed -> Log.d(
+                                                    SnackbarResult.ActionPerformed -> {Log.d(
                                                         "SnackbarDemo",
                                                         "Snackbar's button clicked"
                                                     )
+                                                    permissionLauncher.launch(android.Manifest.permission.READ_EXTERNAL_STORAGE)
+                                                    }
                                                 }
                                             }
 
 
                                         } else {
                                             // request permission
-
+                                            permissionLauncher.launch(android.Manifest.permission.READ_EXTERNAL_STORAGE)
                                         }
                                     } else {
                                         imagePicker.launch("image/*")
